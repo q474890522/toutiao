@@ -1,0 +1,44 @@
+<html>
+<body>
+<pre>
+    This is a new!
+    $!{value1}
+    $!{value2}
+    ${value3}
+
+    #colors
+    #foreach ($color in $colors)
+        Color $!{foreach.index}/$!{foreach.count}: $!{color}
+    #end
+
+    #map
+    #foreach ($entry in $maps.entrySet())
+        Map $!{foreach.index}/$!{foreach.count}: $!entry.key $!entry.value
+    #end
+
+    $!{user1.name}
+    ${user1.getName()}
+
+    #set($title = "nowcoder")
+    Include: #include("header.vm")<br>
+    Parse: #parse("header.vm")
+    #macro(render_color $color, $index)
+        Color: ${color}, Index: ${index}
+    #end
+
+    #foreach($color in $colors)
+        #render_color($color, $foreach.index)
+    #end
+
+    #set($hello = "hello <br>")
+    #set($hworld1 = $hello)
+    #set($hworld2 = $hello + "world")
+    #set($hworld3 = '$hello world')
+
+    ${hello}
+    ${hworld1}
+    ${hworld2}
+    ${hworld3}
+</pre>
+</body>
+</html>

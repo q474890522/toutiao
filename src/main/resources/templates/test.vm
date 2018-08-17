@@ -1,0 +1,7 @@
+<html>
+<body>
+#foreach($vo in $vos)
+$!{vo.news.image}
+#end
+</body>
+</html>
