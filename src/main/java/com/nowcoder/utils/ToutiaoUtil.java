@@ -11,6 +11,17 @@ import java.util.Map;
 public class ToutiaoUtil {
     private static final Logger logger = LoggerFactory.getLogger(ToutiaoUtil.class);
 
+    public static String IMAGE_DOMIN = "http://127.0.0.1:8080/";
+    public  static String IMAGE_DIR = "G:\\ToutiaoImage\\";
+    public static String[] IMAGE_FILE_EXT = {"png", "jpg", "jpeg", "bmp"};
+    public static boolean isImage(String fileExt) {
+        for(String ext : IMAGE_FILE_EXT) {
+            if(ext.equals(fileExt))
+                return true;
+        }
+        return false;
+    }
+
     public static String getJSONString(int code) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("code", code);
