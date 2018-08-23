@@ -42,7 +42,7 @@ public class InitDatabaseTests {
         Random random = new Random();
         for (int i = 0; i < 11; i++) {
             User user = new User();
-            user.setName(String.format("User%d", i));
+            user.setName(String.format("User%d", i+1));
             user.setPassword("");
             user.setSalt("");
             user.setHeadUrl(String.format("http://images.nowcoder.com/head/%dt.png", random.nextInt(1000)));
@@ -85,8 +85,8 @@ public class InitDatabaseTests {
 
         }
         Assert.assertEquals("aaaaaa", userDAO.selectById(1).getPassword());
-        userDAO.deleteById(1);
-        Assert.assertNull(userDAO.selectById(1));
+        //userDAO.deleteById(1);
+        //Assert.assertNull(userDAO.selectById(1));
         Assert.assertNotNull(commentDAO.selectByEntity(1, EntityType.ENTITY_NEWS).get(0));
         Assert.assertEquals(3, commentDAO.getCommentCount(1, EntityType.ENTITY_NEWS));
     }

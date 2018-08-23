@@ -23,13 +23,13 @@ import java.util.List;
 public class HomeController {
 
     @Autowired
-    private NewsService newsService;
+    NewsService newsService;
 
     @Autowired
-    private UserService userService;
+    UserService userService;
 
     @Autowired
-    private HostHolder hostHolder;
+    HostHolder hostHolder;
 
     @RequestMapping(path = {"/", "/index"}, method = {RequestMethod.GET, RequestMethod.POST})
     public String index(@RequestParam(value = "pop", defaultValue = "0") int pop,

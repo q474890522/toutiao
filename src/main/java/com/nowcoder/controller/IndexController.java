@@ -25,7 +25,7 @@ public class IndexController {
     private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
     @Autowired
-    private ToutiaoService toutiaoService;
+    ToutiaoService toutiaoService;
 
     @RequestMapping(path = {"/","/index"})
     @ResponseBody

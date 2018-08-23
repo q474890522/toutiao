@@ -45,3 +45,18 @@ CREATE TABLE `comment` (
   INDEX `entity_index` (`entity_id` ASC, `entity_type` ASC))
   ENGINE = InnoDB
   DEFAULT CHARACTER SET = utf8;
+
+DROP TABLE IF EXISTS `message`;
+CREATE TABLE `message` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `from_id` INT NOT NULL,
+  `to_id` INT NOT NULL,
+  `content` TEXT NOT NULL,
+  `created_date` DATETIME NOT NULL,
+  `has_read` INT NOT NULL,
+  `conversation_id` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `index_created_date` (`created_date` ASC),
+  INDEX `index_conversation_id` (`conversation_id` ASC))
+  ENGINE = InnoDB
+  DEFAULT CHARACTER SET = utf8;

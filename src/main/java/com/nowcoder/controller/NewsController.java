@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -66,6 +67,8 @@ public class NewsController {
     @RequestMapping(path = {"/addComment"}, method = {RequestMethod.POST})
     public String addComment(@RequestParam("newsId") int newsId, @RequestParam("content") String content) {
         try {
+            //过滤
+            content = HtmlUtils.htmlEscape(content);
             Comment comment = new Comment();
             comment.setContent(content);
             comment.setEntityId(newsId);
