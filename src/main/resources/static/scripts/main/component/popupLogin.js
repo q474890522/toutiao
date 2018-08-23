@@ -65,7 +65,6 @@
                     } else {
                         oResult.msgname && that.iptError(that.emailIpt, oResult.msgname);
                         oResult.msgpwd && that.iptError(that.pwdIpt, oResult.msgpwd);
-                        that.iptError(that.pwdIpt,'密码错误')
                     }
                 }).fail(function () {
                     alert('出现错误，请重试');

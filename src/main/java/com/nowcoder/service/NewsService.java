@@ -1,5 +1,6 @@
 package com.nowcoder.service;
 
+import com.nowcoder.dao.CommentDAO;
 import com.nowcoder.dao.NewsDAO;
 import com.nowcoder.model.News;
 import com.nowcoder.utils.ToutiaoUtil;
@@ -23,11 +24,22 @@ public class NewsService {
         return newsDAO.selectByUserIdAndOffset(userId, offset, limit);
     }
 
+    public void addNews(News news) {
+        newsDAO.addNews(news);
+    }
+
+    public News getNewsById(int id) {
+        return newsDAO.selectById(id);
+    }
+
+    public int updateCommentCount(int commentCount, int newsId) {
+        return newsDAO.updateCommentCount(commentCount, newsId);
+    }
     public String saveImage(MultipartFile file) throws IOException {
         int dotPos = file.getOriginalFilename().lastIndexOf(".");
         if(dotPos < 0)
             return null;
-        String fileExt = file.getOriginalFilename().substring(dotPos + 1);
+        String fileExt = file.getOriginalFilename().substring(dotPos + 1).toLowerCase();
         Boolean isImage = ToutiaoUtil.isImage(fileExt);
         if(!isImage)
             return null;

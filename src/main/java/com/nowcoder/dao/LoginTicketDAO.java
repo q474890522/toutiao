@@ -10,7 +10,7 @@ public interface LoginTicketDAO {
     String INSERT_FIELD = " ticket, user_id, expired, status ";
 
     @Insert({"insert into ", TABLE_NAME, "(", INSERT_FIELD, ") values(#{ticket}, #{userId}, #{expired}, #{status})"})
-    void addLoginTicket(LoginTicket loginTicket);
+    int addLoginTicket(LoginTicket loginTicket);
 
     @Select({"select ", SELECT_FIELD, " from ", TABLE_NAME, "where ticket = #{ticket}"})
     LoginTicket selectByTicket(String ticket);

@@ -1,11 +1,10 @@
 package com.nowcoder;
 
+import com.nowcoder.dao.CommentDAO;
 import com.nowcoder.dao.LoginTicketDAO;
 import com.nowcoder.dao.NewsDAO;
 import com.nowcoder.dao.UserDAO;
-import com.nowcoder.model.LoginTicket;
-import com.nowcoder.model.News;
-import com.nowcoder.model.User;
+import com.nowcoder.model.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +22,7 @@ import java.util.UUID;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = ToutiaoApplication.class)
 @Sql("/init-schema.sql")
+@WebAppConfiguration
 public class InitDatabaseTests {
 
     @Autowired
@@ -33,6 +33,9 @@ public class InitDatabaseTests {
 
     @Autowired
     private LoginTicketDAO loginTicketDAO;
+
+    @Autowired
+    private CommentDAO commentDAO;
 
     @Test
     public void contextLoads() {
@@ -68,9 +71,23 @@ public class InitDatabaseTests {
             loginTicket.setExpired(date1);
             loginTicket.setStatus(0);
             loginTicketDAO.addLoginTicket(loginTicket);
+
+            for(int j = 0; j < 3; j++) {
+                Comment comment = new Comment();
+                comment.setContent("lalalaalalalalalaalalla" + String.valueOf(j));
+                comment.setCreatedDate(new Date());
+                comment.setUserId(user.getId());
+                comment.setEntityType(EntityType.ENTITY_NEWS);
+                comment.setEntityId(news.getId());
+                comment.setStatus(0);
+                commentDAO.addComment(comment);
+            }
+
         }
         Assert.assertEquals("aaaaaa", userDAO.selectById(1).getPassword());
         userDAO.deleteById(1);
         Assert.assertNull(userDAO.selectById(1));
+        Assert.assertNotNull(commentDAO.selectByEntity(1, EntityType.ENTITY_NEWS).get(0));
+        Assert.assertEquals(3, commentDAO.getCommentCount(1, EntityType.ENTITY_NEWS));
     }
 }

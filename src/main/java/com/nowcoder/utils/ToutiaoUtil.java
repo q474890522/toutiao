@@ -14,11 +14,12 @@ public class ToutiaoUtil {
     public static String IMAGE_DOMIN = "http://127.0.0.1:8080/"; 
     public  static String IMAGE_DIR = "G:\\ToutiaoImage\\";
     public static String[] IMAGE_FILE_EXT = {"png", "jpg", "jpeg", "bmp"};
+    public static String QINIU_DOMIN_PREFIX = "http://pdtdja5jx.bkt.clouddn.com/";
     public static boolean isImage(String fileExt) {
         for(String ext : IMAGE_FILE_EXT) {
             if(ext.equals(fileExt))
                 return true;
-        } 
+        }
         return false;
     }
 
