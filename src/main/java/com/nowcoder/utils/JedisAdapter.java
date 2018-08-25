@@ -1,5 +1,9 @@
 package com.nowcoder.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.BinaryClient;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
@@ -8,7 +12,75 @@ import redis.clients.jedis.Tuple;
 import java.util.HashSet;
 import java.util.Set;
 
-public class JedisAdapter {
+@Component
+public class JedisAdapter implements InitializingBean {
+    private static final Logger logger = LoggerFactory.getLogger(JedisAdapter.class);
+    private JedisPool jedisPool = null;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        jedisPool = new JedisPool("localhost", 6379);
+    }
+
+    public long sadd(String key, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.sadd(key, value);
+        } catch (Exception e) {
+            logger.error("Jedis添加异常" + e.getMessage());
+            return 0;
+        } finally {
+            if(jedis != null) {
+                jedis.close();
+            }
+        }
+    }
+
+    public long srem(String key, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.srem(key, value);
+        } catch (Exception e) {
+            logger.error("Jedis删除异常" + e.getMessage());
+            return 0;
+        } finally {
+            if(jedis != null) {
+                jedis.close();
+            }
+        }
+    }
+
+    public boolean sismember(String key, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.sismember(key, value);
+        } catch (Exception e) {
+            logger.error("判断Jedis set是否存在value异常" + e.getMessage());
+            return false;
+        } finally {
+            if(jedis != null) {
+                jedis.close();
+            }
+        }
+    }
+
+    public long scard(String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.scard(key);
+        } catch (Exception e) {
+            logger.error("获取Jedis set长度异常" + e.getMessage());
+            return 0;
+        } finally {
+            if(jedis != null) {
+                jedis.close();
+            }
+        }
+    }
 
     public static void print(int index, Object object) {
         System.out.println(String.format("%d, %s", index, object.toString()));

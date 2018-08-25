@@ -22,4 +22,7 @@ public interface NewsDAO {
 
     @Update({"update ", TABLE_NAME, " set comment_count = #{commentCount} where id = #{newsId}"})
     int updateCommentCount(@Param("commentCount") int commentCount, @Param("newsId") int newsId);
+
+    @Update({"update ", TABLE_NAME, " set like_count = #{likeCount} where id = #{newsId}"})
+    int updateLikeCount(@Param("likeCount") int likeCount, @Param("newsId") int newsId);
 }

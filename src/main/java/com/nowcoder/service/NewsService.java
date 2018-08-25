@@ -35,6 +35,11 @@ public class NewsService {
     public int updateCommentCount(int commentCount, int newsId) {
         return newsDAO.updateCommentCount(commentCount, newsId);
     }
+
+    public int updateLikeCount(int likeCount, int newsId) {
+        return newsDAO.updateLikeCount(likeCount, newsId);
+    }
+
     public String saveImage(MultipartFile file) throws IOException {
         int dotPos = file.getOriginalFilename().lastIndexOf(".");
         if(dotPos < 0)

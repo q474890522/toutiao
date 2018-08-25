@@ -1,12 +1,19 @@
-#parse("header.html")
+ #parse("header.html")
     <div id="main">
         <div class="container">
             <div class="post detail">
 
                 <div class="votebar">
-                    <button class="click-like up" aria-pressed="false" title="赞同"><i class="vote-arrow"></i><span class="count">$!{news.likeCount}</span></button>
-                    <button class="click-dislike down" aria-pressed="true" title="反对"><i class="vote-arrow"></i>
-                    </button>
+                    #if($like>0)
+                    <button class="click-like up pressed" data-id="$!{news.id}" title="赞同"><i class="vote-arrow"></i><span class="count">$!{news.likeCount}</span></button>
+                    #else
+                    <button class="click-like up" data-id="$!{news.id}" title="赞同"><i class="vote-arrow"></i><span class="count">$!{news.likeCount}</span></button>
+                    #end
+                    #if($like<0)
+                    <button class="click-dislike down pressed" data-id="$!{news.id}" title="反对"><i class="vote-arrow"></i></button>
+                    #else
+                    <button class="click-dislike down" data-id="$!{news.id}" title="反对"><i class="vote-arrow"></i></button>
+                    #end
                 </div>
 
                 <div class="content" data-url="http://nowcoder.com/posts/5l3hjr">
@@ -64,16 +71,18 @@
                 #if($user)
                 <span>评论 ($!{news.commentCount})</span>
                 <form method="post" action="/addComment">
-                  <div class="form-group text required comment_content">
+                    <input name="newsId" type="hidden" value="$!{news.id}">
+
+                    <div class="form-group text required comment_content">
                       <label class="text required sr-only">
                           <abbr title="required">*</abbr> 评论
                       </label>
                       <input type="hidden" name="newsId" value="$!{news.id}"/>
                       <textarea rows="5" class="text required comment-content form-control" name="content" id="content"></textarea>
-                  </div>
-                  <div class="text-right">
+                    </div>
+                    <div class="text-right">
                     <input type="submit" name="commit" value="提 交" class="btn btn-default btn-info">
-                  </div>
+                    </div>
                 </form>
                 #else
                 <div class="login-actions">
@@ -89,7 +98,9 @@
                         <img src="$!{commentvo.user.headUrl}">
                     </a>
                     <div class="media-body">
-                        <h4 class="media-heading"> <small class="date">$date.format('yyyy-MM-dd HH:mm:ss', $!{commentvo.comment.createdDate})</small></h4>
+                        <h4 class="media-heading">
+                            <small class="date">$date.format('yyyy-MM-dd HH:mm:ss', $!{commentvo.comment.createdDate})</small>
+                        </h4>
                         <div>$!{commentvo.comment.content}</div>
                     </div>
                 </div>
@@ -138,6 +149,7 @@
 
           })
         </script>
+        <script type="text/javascript" src="/scripts/main/site/detail.js"></script>
     </div>
 
 #parse("footer.html")
