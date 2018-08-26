@@ -1,5 +1,6 @@
 package com.nowcoder.utils;
 
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -9,8 +10,8 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.Tuple;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+
 
 @Component
 public class JedisAdapter implements InitializingBean {
@@ -20,6 +21,63 @@ public class JedisAdapter implements InitializingBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         jedisPool = new JedisPool("localhost", 6379);
+    }
+
+    public void set(String key, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            jedis.set(key, value);
+        } catch (Exception e) {
+            logger.error("Jedis set异常" + e.getMessage());
+        } finally {
+            if(jedis != null)
+                jedis.close();
+        }
+    }
+
+    public String get(String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.get(key);
+        } catch (Exception e) {
+            logger.error("jedis get错误");
+            return null;
+        } finally {
+            if(jedis != null)
+                jedis.close();
+        }
+    }
+
+    public long lpush(String key, String value) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.lpush(key, value);
+        } catch (Exception e) {
+            logger.error("Jedis lpush异常" + e.getMessage());
+            return 0;
+        } finally {
+            if(jedis != null) {
+                jedis.close();
+            }
+        }
+    }
+
+    public List<String> brpop(int timeout, String key) {
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            return jedis.brpop(timeout, key);
+        } catch (Exception e) {
+            logger.error("Jedis brpop异常" + e.getMessage());
+            return null;
+        } finally {
+            if(jedis != null) {
+                jedis.close();
+            }
+        }
     }
 
     public long sadd(String key, String value) {
@@ -80,6 +138,17 @@ public class JedisAdapter implements InitializingBean {
                 jedis.close();
             }
         }
+    }
+
+    public void setObject(String key, Object value) {
+        set(key, JSON.toJSONString(value));
+    }
+
+    public <T> T getObject(String key, Class<T> clazz) {
+        String value = get(key);
+        if(value != null)
+            return JSON.parseObject(value, clazz);
+        return null;
     }
 
     public static void print(int index, Object object) {
